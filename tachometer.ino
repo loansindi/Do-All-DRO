@@ -1,7 +1,6 @@
 #include <interrupt.h>
 
 
-
 //Pin connected to ST_CP of 74HC595
 int latchPin = 0;
 //Pin connected to SH_CP of 74HC595
@@ -9,12 +8,12 @@ int clockPin = 1;
 ////Pin connected to DS of 74HC595
 int dataPin = 3;
 
-//int switchPin = 1;
-
 int thousands = 0;
 int hundreds = 0;
 int tens = 0;
 int ones = 0;
+
+// These bytes are trial-and-error digits for the seven segment displays I have.
 
 #define zero B11111100
 #define one B01100000
@@ -27,29 +26,28 @@ int ones = 0;
 #define eight B11111110
 #define nine B11100110
 
-byte numbers[10] = {zero, one, two, three, four, five, six, seven, eight, nine};
 
-byte test = B10000000;
+//numbers is used to call specific digits
+byte numbers[10] = {zero, one, two, three, four, five, six, seven, eight, nine}; 
 
 void setup() {
   //set pins to output so you can control the shift register
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
-  attachInterrupt(0, increment, FALLING);
-
+  attachInterrupt(0, increment, FALLING); // 'increment' is my poorly-named ISR for detecting each revolution of the pulley
 }
 
-int count = 0;
+
 unsigned long time = micros();
 unsigned long newTime = micros();
-unsigned long interruptTime = 0;
+unsigned long delta = 0;
 
-int timeElapsed = 0;
+
+
 unsigned long rpm = 0;
 unsigned long oldTime = 0;
 unsigned long updateTime = 0;
-unsigned long delta = 0;
 
 void loop() {
 
