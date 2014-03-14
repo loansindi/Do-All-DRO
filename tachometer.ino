@@ -1,6 +1,10 @@
 #include <interrupt.h>
 
 
+/* This code is written for an Adafruit Trinket microcontroller board, and
+  implemented with a 7 segment display board that was laying around the 
+  hackerspace. */
+
 //Pin connected to ST_CP of 74HC595
 int latchPin = 0;
 //Pin connected to SH_CP of 74HC595
@@ -35,7 +39,7 @@ void setup() {
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
-  attachInterrupt(0, increment, FALLING); // 'increment' is my poorly-named ISR for detecting each revolution of the pulley
+  attachInterrupt(0, increment, FALLING); // 'increment' is my ISR
 }
 
 
@@ -54,11 +58,14 @@ void loop() {
   time = micros();
   rpm = 30000000/delta;
   update();
-  if( time - updateTime > 30000) {
+  if( time - updateTime > 30000) { //this statement reduces the refresh rate
     writeDisplay();
   }
 }
 
+
+//Our ISR needs to be as brief as possible, so I just determine the time since
+//the last interrupt was triggered
 void increment() {
   oldTime = newTime;
   newTime = time;
