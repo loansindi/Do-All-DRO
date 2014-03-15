@@ -1,6 +1,3 @@
-#include <interrupt.h>
-
-
 /* This code is written for an Adafruit Trinket microcontroller board, and
   implemented with a 7 segment display board that was laying around the 
   hackerspace. */
