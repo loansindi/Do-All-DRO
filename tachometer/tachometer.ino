@@ -6,8 +6,9 @@
 int latchPin = 0;
 //Pin connected to SH_CP of 74HC595
 int clockPin = 1;
-////Pin connected to DS of 74HC595
+//Pin connected to DS of 74HC595
 int dataPin = 3;
+// Note that I am not defining which pin connects to your sensor - this is interrupt 0 which is attached to pin 2. 
 
 int thousands = 0;
 int hundreds = 0;
@@ -36,7 +37,9 @@ void setup() {
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
-  attachInterrupt(0, increment, FALLING); // 'increment' is my ISR
+  attachInterrupt(0, increment, FALLING); // 'increment' is my ISR - the sensor attached to this interrupt
+                                          // could be anything - I'm using a hall effect sensor
+                                          // but an optical sensor or maybe some other cool thing would work too
 }
 
 
